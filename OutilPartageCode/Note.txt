@@ -1,0 +1,20 @@
+#installation de git :
+apt-get install git
+
+# quiet : n'affiche que les erreurs et warnings
+# gecos : ne pas demander les informations complémentaires (n° de tél, etc.)
+# disabled-login : pas de login tant que le mdp n'est pas setter
+adduser --quiet --gecos "" --disabled-login matthieu
+
+#creation des utilisateurs matthieu, jordane et said
+
+#création d'un groupe projet1
+#ajouter le groupe aux utilisateurs matthieu et jordane
+
+#création d'un groupe projet2
+#ajouter le groupe a  l'utilisateur said
+
+jordane@debian:/opt/gitRepo$ mkdir projet1
+jordane@debian:/opt/gitRepo$ cd projet1/
+#init un repo dans le dossier courant en donnant les droits
+git init --bare --shared
