@@ -9,4 +9,8 @@ Docs pour le groupe outil de validation de document
 
 # TODO
 
+* methode recherche & selection d'un fichier ( absolute path dans le server ) 
+* methode recherche & selection d'un utilisateur ( mail ou methodo de contact )
+* definition du format d'un fichier de persistance d'une gestion de validation de document (XML ?)
+
 # DONE
