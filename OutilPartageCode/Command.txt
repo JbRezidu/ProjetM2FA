@@ -1,0 +1,234 @@
+jordane@debian:/opt$ su -
+Mot de passe : 
+root@debian:~# pwd
+/rootl
+root@debian:~# cd /opt/
+root@debian:/opt# mkdir gitRepo
+root@debian:/opt# ls -larth
+total 12K
+drwxr-xr-x 22 root root 4,0K déc.  12 09:12 ..
+drwxr-xr-x  2 root root 4,0K déc.  12 12:17 gitRepo
+drwxr-xr-x  3 root root 4,0K déc.  12 12:17 .
+root@debian:/opt# chmod o+w gitRepo/
+
+
+#installation de git :
+apt-get install git
+
+# quiet : n'affiche que les erreurs et warnings
+# gecos : ne pas demander les informations complémentaires (n° de tél, etc.)
+# disabled-login : pas de login tant que le mdp n'est pas setter
+adduser --quiet --gecos "" --disabled-login matthieu
+
+#création d'un groupe projet1
+#ajouter le groupe aux utilisateurs matthieu et jordane
+
+#création d'un groupe projet2
+#ajouter le groupe a  l'utilisateur said
+
+jordane@debian:/opt/gitRepo$ mkdir projet1
+jordane@debian:/opt/gitRepo$ cd projet1/
+#init un repo dans le dossier courant en donnant les droits
+git init --bare --shared
+
+#en tant qu'user jordane :
+git config --global user.name "jordane-quincy"
+git config --global user.email "jordanequincy@gmail.com"
+
+#installation d'openssh puis
+sudo service ssh start
+
+#Ca se tente :
+jordane@debian:~/repo$ git clone jordane@localhost:projet1.git
+Clonage dans 'projet1'...
+The authenticity of host 'localhost (::1)' can't be established.
+ECDSA key fingerprint is bf:59:76:f1:3b:ec:ca:29:bd:20:f6:e2:4c:79:a9:39.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+jordane@localhost's password: 
+fatal: 'projet1.git' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+#création du fichier /home/jordane/test/test.txt pour check si le ssh fonctionne :
+jordane@debian:~/repo$ scp jordane@localhost:/home/jordane/test/test.txt .
+jordane@localhost's password: 
+test.txt                                      100%   10     0.0KB/s   00:00
+# --> ok, le fichier est bien rappatrié dans le dossier courant
+
+
+git clone jordane@localhost:file:///opt/gitRepo/projet1/projet1.git
+
+
+
+jordane@debian:~$ cd /home/jordane/repo
+jordane@debian:~/repo$ git init
+Dépôt Git vide initialisé dans /home/jordane/repo/.git/
+jordane@debian:~/repo$ git add a.txt 
+jordane@debian:~/repo$ git commit -m "test"
+[master (commit racine) a0d9f68] test
+ 1 file changed, 1 insertion(+)
+ create mode 100644 a.txt
+jordane@debian:~/repo$ git pull
+fatal: Aucun dépôt distant spécifié. Veuillez spécifier une URL ou un nom
+distant depuis lesquels les nouvelles révisions devraient être récupérées.
+jordane@debian:~/repo$ git push
+fatal: Pas de destination pour pousser.
+Spécifiez une URL depuis la ligne de commande ou configurez un dépôt distant en utilisant
+
+    git remote add <nom> <url>
+
+et poussez alors en utilisant le dépôt distant
+
+    git push <nom>
+
+jordane@debian:~/repo$ git remote -v
+jordane@debian:~/repo$ git remote add origin jordane@localhost:/opt/gitRepo/
+jordane@debian:~/repo$ git remote -v
+origin	jordane@localhost:/opt/gitRepo/ (fetch)
+origin	jordane@localhost:/opt/gitRepo/ (push)
+jordane@debian:~/repo$ git push
+warning: push.default n'est pas défini ; sa valeur implicite a changé dans Git 2.0
+de 'matching' vers 'simple'. Pour supprimer ce message et maintenir
+le comportement actuel après la modification de la valeur de défaut, utilisez :
+
+  git config --global push.default matching
+
+Pour supprimer ce message et adopter le nouveau comportement maintenant, utilisez :
+
+  git config --global push.default simple
+
+Quand push.default vaudra 'matching', git poussera les branches locales
+sur les branches distantes qui existent déjà avec le même nom.
+
+Depuis Git 2.0, Git utilise par défaut le comportement plus conservatif 'simple'
+qui ne pousse la branche courante que vers la branche distante correspondante
+que 'git pull' utilise pour mettre à jour la branche courante.
+ 
+Voir 'git help config' et chercher 'push.default' pour plus d'information.
+(le mode 'simple' a été introduit dans Git 1.7.11. Utilisez le mode similaire
+'current' au lieu de 'simple' si vous utilisez de temps en temps d'anciennes versions de Git)
+
+fatal: La branche courante master n'a pas de branche amont.
+Pour pousser la branche courante et définir la distante comme amont, utilisez
+
+    git push --set-upstream origin master
+
+jordane@debian:~/repo$ git push --set-upstream origin master
+jordane@localhost's password: 
+fatal: '/opt/gitRepo/' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+
+
+
+git remote set-url origin jordane@localhost:/opt/gitRepo/projet1/
+
+
+jordane@debian:~/repo$ git remote -v
+origin	jordane@localhost:/opt/gitRepo/projet1/ (fetch)
+origin	jordane@localhost:/opt/gitRepo/projet1/ (push)
+jordane@debian:~/repo$ git pull
+jordane@localhost's password: 
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> master
+
+
+git branch --set-upstream-to=origin/master master
+
+jordane@debian:~/repo$ git branch --set-upstream-to=origin/master master
+error: la branche amont demandée 'origin/master' n'existe pas
+astuce: 
+astuce: Si vous comptez baser votre travail sur une branche
+astuce: amont qui existe déjà sur le serveur distant, vous pouvez
+astuce: lancer "git fetch" pour la récupérer.
+astuce: 
+astuce: Si vous comptez pousser une nouvelle branche locale qui suivra
+astuce: sa jumelle distante, vous pouvez utiliser "git push -u"
+astuce: pour paramétrer le suivi distant en même temps que vous poussez.
+jordane@debian:~/repo$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+
+
+#on va donc pousser la branche distante
+git push -u
+
+jordane@debian:~/repo$ git push -u
+warning: push.default n'est pas défini ; sa valeur implicite a changé dans Git 2.0
+de 'matching' vers 'simple'. Pour supprimer ce message et maintenir
+le comportement actuel après la modification de la valeur de défaut, utilisez :
+
+  git config --global push.default matching
+
+Pour supprimer ce message et adopter le nouveau comportement maintenant, utilisez :
+
+  git config --global push.default simple
+
+Quand push.default vaudra 'matching', git poussera les branches locales
+sur les branches distantes qui existent déjà avec le même nom.
+
+Depuis Git 2.0, Git utilise par défaut le comportement plus conservatif 'simple'
+qui ne pousse la branche courante que vers la branche distante correspondante
+que 'git pull' utilise pour mettre à jour la branche courante.
+ 
+Voir 'git help config' et chercher 'push.default' pour plus d'information.
+(le mode 'simple' a été introduit dans Git 1.7.11. Utilisez le mode similaire
+'current' au lieu de 'simple' si vous utilisez de temps en temps d'anciennes versions de Git)
+
+fatal: La branche courante master n'a pas de branche amont.
+Pour pousser la branche courante et définir la distante comme amont, utilisez
+
+    git push --set-upstream origin master
+
+#donc :
+jordane@debian:~/repo$ git config --global push.default simple
+jordane@debian:~/repo$ git push -u
+fatal: La branche courante master n'a pas de branche amont.
+Pour pousser la branche courante et définir la distante comme amont, utilisez
+
+    git push --set-upstream origin master
+jordane@debian:~/repo$ git push --set-upstream origin master
+jordane@localhost's password: 
+Décompte des objets: 3, fait.
+Écriture des objets: 100% (3/3), 206 bytes | 0 bytes/s, fait.
+Total 3 (delta 0), reused 0 (delta 0)
+To jordane@localhost:/opt/gitRepo/projet1/
+ * [new branch]      master -> master
+La branche master est paramétrée pour suivre la branche distante master depuis origin.
+
+jordane@debian:~/repo$ echo "b" > b.txt
+jordane@debian:~/repo$ git status
+Sur la branche master
+Votre branche est à jour avec 'origin/master'.
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+
+	b.txt
+
+aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
+jordane@debian:~/repo$ git add b.txt 
+jordane@debian:~/repo$ git commit -m "b"
+[master 190d737] b
+ 1 file changed, 1 insertion(+)
+ create mode 100644 b.txt
+jordane@debian:~/repo$ git push
+jordane@localhost's password: 
+Décompte des objets: 3, fait.
+Compression des objets: 100% (2/2), fait.
+Écriture des objets: 100% (3/3), 261 bytes | 0 bytes/s, fait.
+Total 3 (delta 0), reused 0 (delta 0)
+To jordane@localhost:/opt/gitRepo/projet1/
+   a0d9f68..190d737  master -> master
