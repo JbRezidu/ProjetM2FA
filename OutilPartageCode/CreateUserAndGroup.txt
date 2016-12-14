@@ -1,0 +1,11 @@
+#create du groupe d'utilisateur gitgrp
+addgroup gitgrp
+# quiet : n'affiche que les erreurs et warnings
+# gecos : ne pas demander les informations complémentaires (n° de tél, etc.)
+# disabled-login : pas de login tant que le mdp n'est pas setter
+adduser --quiet --gecos "" --disabled-login toto gitgrp
+#ajout du mdp test
+echo "toto:test" | chpasswd
+#ajout de toto dans le groupe
+adduser toto gitgrp
+
