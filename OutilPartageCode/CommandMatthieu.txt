@@ -1,0 +1,101 @@
+matthieu@debian:~$ pwd
+/home/matthieu
+matthieu@debian:~$ mkdir projetMatthieu1
+matthieu@debian:~$ cd projetMatthieu1/
+matthieu@debian:~/projetMatthieu1$ echo "a" > a.txt
+matthieu@debian:~/projetMatthieu1$ echo "b" > b.txt
+matthieu@debian:~/projetMatthieu1$ echo "c" > c.txt
+#init du projet git vide
+matthieu@debian:~/projetMatthieu1$ git init
+Dépôt Git vide initialisé dans /home/matthieu/projetMatthieu1/.git/
+matthieu@debian:~/projetMatthieu1$ ls
+a.txt  b.txt  c.txt
+matthieu@debian:~/projetMatthieu1$ ls -larth
+total 24K
+drwxr-xr-x 18 matthieu matthieu 4,0K déc.  13 00:28 ..
+-rw-r--r--  1 matthieu matthieu    2 déc.  13 00:28 a.txt
+-rw-r--r--  1 matthieu matthieu    2 déc.  13 00:28 b.txt
+-rw-r--r--  1 matthieu matthieu    2 déc.  13 00:28 c.txt
+drwxr-xr-x  3 matthieu matthieu 4,0K déc.  13 00:29 .
+drwxr-xr-x  7 matthieu matthieu 4,0K déc.  13 00:29 .git
+
+matthieu@debian:~/projetMatthieu1$ git add *
+matthieu@debian:~/projetMatthieu1$ git commit -m "init projetMatthieu1"
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <matthieu@debian>) not allowed
+
+matthieu@debian:~/projetMatthieu1$ git config --global user.email "matthieu@example.com"
+matthieu@debian:~/projetMatthieu1$ git config --global user.name "matthieu"
+
+matthieu@debian:~/projetMatthieu1$ git commit -m "init projetMatthieu1"[master (commit racine) 0f9ef98] init projetMatthieu1
+ 3 files changed, 3 insertions(+)
+ create mode 100644 a.txt
+ create mode 100644 b.txt
+ create mode 100644 c.txt
+
+matthieu@debian:~/projetMatthieu1$ git remote add origin matthieu@localhost:/opt/gitRepo/projetMatthieu1/
+matthieu@debian:~/projetMatthieu1$ git remote -v
+origin    matthieu@localhost:/opt/gitRepo/projetMatthieu1/ (fetch)
+origin    matthieu@localhost:/opt/gitRepo/projetMatthieu1/ (push)
+
+matthieu@debian:~/projetMatthieu1$ git push --set-upstream origin master
+The authenticity of host 'localhost (::1)' can't be established.
+ECDSA key fingerprint is bf:59:76:f1:3b:ec:ca:29:bd:20:f6:e2:4c:79:a9:39.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+matthieu@localhost's password:
+fatal: '/opt/gitRepo/projetMatthieu1/' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+#En root
+root@debian:/opt# chgrp gitgrp gitRepo/
+
+
+matthieu@debian:~/projetMatthieu1$ git push --set-upstream origin master
+matthieu@localhost's password:
+fatal: '/opt/gitRepo/projetMatthieu1/' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+#En root
+root@debian:/opt/gitRepo# mkdir projetMatthieu1
+root@debian:/opt/gitRepo/projetMatthieu1# git --bare init
+root@debian:/opt/gitRepo# chgrp -R gitgrp projetMatthieu1/
+root@debian:/opt/gitRepo# chown -R matthieu projetMatthieu1/
+
+matthieu@debian:~/projetMatthieu1$ git config --global push.default simple
+matthieu@debian:~/projetMatthieu1$ git push --set-upstream origin master
+matthieu@localhost's password:
+Décompte des objets: 5, fait.
+Compression des objets: 100% (2/2), fait.
+Écriture des objets: 100% (5/5), 285 bytes | 0 bytes/s, fait.
+Total 5 (delta 0), reused 0 (delta 0)
+To matthieu@localhost:/opt/gitRepo/projetMatthieu1/
+ * [new branch]      master -> master
+La branche master est paramétrée pour suivre la branche distante master depuis origin.
+
+
+jordane@debian:~$ git clone jordane@localhost:/opt/gitRepo/projetMatthieu1/
+Clonage dans 'projetMatthieu1'...
+jordane@localhost's password:
+remote: Décompte des objets: 5, fait.
+remote: Compression des objets: 100% (2/2), fait.
+Réception d'objets: 100% (5/5), 284 bytes | 0 bytes/s, fait.
+remote: Total 5 (delta 0), reused 0 (delta 0)
+Vérification de la connectivité... fait.
+
