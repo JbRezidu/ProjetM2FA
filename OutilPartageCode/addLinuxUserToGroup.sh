@@ -31,10 +31,10 @@ nomGroupe=$2
 
 #creation du groupe
 addgroup $nomGroupe
-exitIfError $?
+#exitIfError $?
 
 #ajout de l'utilsateur dans le groupe
 adduser $nomUser $nomGroupe
-exitIfError $?
+#exitIfError $?
 
 
