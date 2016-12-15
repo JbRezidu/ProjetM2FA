@@ -78,3 +78,9 @@ git config --global user.email "jordanequincy@gmail.com"
 git add 
 git commit -m "init repo user matthieu "
 git push
+
+
+
+########### a l'init du repo :
+git remote add origin matthieu@localhost:/opt/gitRepo/projetMatthieu1/
+git push --set-upstream origin master
