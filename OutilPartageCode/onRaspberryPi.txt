@@ -1,0 +1,80 @@
+Jordane@Lenovo-PC MINGW64 ~
+$ ssh pi@192.168.50.11
+pi@192.168.50.11's password: raspberry
+
+pi@raspberrypi:~ $ cd /opt/
+pi@raspberrypi:/opt $ mkdir gitRepo
+mkdir: cannot create directory ‘gitRepo’: Permission denied
+pi@raspberrypi:/opt $ sudo mkdir gitRepo
+pi@raspberrypi:~ $ sudo addgroup gitgrp
+Adding group `gitgrp' (GID 1002) ...
+Done.
+
+
+pi@raspberrypi:/opt/gitRepo $ sudo adduser --quiet --gecos "" --disabled-login jordane
+pi@raspberrypi:~ $ echo "jordane:jordane" | sudo chpasswd
+
+pi@raspberrypi:~ $ sudo adduser jordane gitgrp
+Adding user `jordane' to group `gitgrp' ...
+Adding user jordane to group gitgrp
+Done.
+pi@raspberrypi:~ $ sudo chgrp -R gitgrp /opt/gitRepo/
+pi@raspberrypi:~ $ sudo chmod g+w /opt/gitRepo/
+
+
+Jordane@Lenovo-PC MINGW64 ~
+$ ssh jordane@192.168.50.11
+jordane@192.168.50.11's password: jordane
+
+jordane@raspberrypi:~ $ cd /opt/gitRepo/
+jordane@raspberrypi:/opt/gitRepo $ mkdir projet1
+jordane@raspberrypi:/opt/gitRepo $ chgrp -R gitgrp projet1/
+jordane@raspberrypi:/opt/gitRepo $ cd projet1
+jordane@raspberrypi:/opt/gitRepo/projet1 $ git --bare init
+Initialized empty Git repository in /opt/gitRepo/projet1/
+
+
+############################################################ depuis mon pc local :
+Jordane@Lenovo-PC MINGW64 ~/test
+$ git clone jordane@192.168.50.11:/opt/gitRepo/projet1/
+Cloning into 'projet1'...
+jordane@192.168.50.11's password:
+warning: You appear to have cloned an empty repository.
+Checking connectivity... done.
+
+Jordane@Lenovo-PC MINGW64 ~/test/projet1 (master)
+$ git config --global push.default simple
+Jordane@Lenovo-PC MINGW64 ~/test/projet1 (master)
+$ git config --global user.name "jordaneQuincy"
+Jordane@Lenovo-PC MINGW64 ~/test/projet1 (master)
+$ git config --global user.email "jordanequincy@gmail.com"
+Jordane@Lenovo-PC MINGW64 ~/test/projet1 (master)
+
+$ git push
+jordane@192.168.50.11's password:
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 233 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To 192.168.50.11:/opt/gitRepo/projet1/
+ * [new branch]      master -> master
+
+
+############################################################# jeudi 15, test des scripts (après copie via scp) :
+pi@raspberrypi:~ $ sudo ./addLinuxUser.sh matthieu matthieu
+pi@raspberrypi:~ $ sudo ./addLinuxUserToGroup.sh matthieu gitgrp
+addgroup: The group `gitgrp' already exists.
+Adding user `matthieu' to group `gitgrp' ...
+Adding user matthieu to group gitgrp
+Done.
+pi@raspberrypi:~ $ echo $?
+0
+
+
+############"" depuis ma vm debian
+
+git config --global push.default simple
+git config --global user.name "jordaneQuincy"
+git config --global user.email "jordanequincy@gmail.com"
+git add 
+git commit -m "init repo user matthieu "
+git push

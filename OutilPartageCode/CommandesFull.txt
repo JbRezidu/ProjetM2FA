@@ -25,6 +25,7 @@ matthieu@debian:~/projetMatthieu1$ echo "b" > b.txt
 matthieu@debian:~/projetMatthieu1$ echo "c" > c.txt
 matthieu@debian:~/projetMatthieu1$ git add *
 matthieu@debian:~/projetMatthieu1$ git commit -m "init projetMatthieu1"
+git remote add origin matthieu@localhost:/opt/gitRepo/projetMatthieu1/
 matthieu@debian:~/projetMatthieu1$ git push --set-upstream origin master
 
 
